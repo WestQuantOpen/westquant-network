@@ -105,8 +105,6 @@ class SequenceAdapter:
         wall_start = _time.time()
 
         try:
-            from sequence.components.bsm import SingleAtomBSM
-            from sequence.components.memory import Memory
             from sequence.components.optical_channel import (
                 ClassicalChannel,
                 QuantumChannel,
@@ -157,15 +155,13 @@ class SequenceAdapter:
         # Create quantum channels
         for edge in experiment.topology.edges:
             ql = edge.quantum_link
-            qc = QuantumChannel(
+            QuantumChannel(
                 name=f"qc_{edge.source}_{edge.target}",
                 timeline=tl,
                 attenuation=ql.attenuation,
                 distance=ql.distance,
                 light_speed=ql.speed * 1e-3,  # convert m/s to km/ps
             )
-            # SeQUeNCe requires explicit send/recv setup
-            # We'll store the channel for later use
 
         # Run timeline
         try:
@@ -196,7 +192,7 @@ class SequenceAdapter:
             delivered = 0
             total_fidelity = 0.0
             fidelities = []
-            for node_id, mems in node_memories.items():
+            for _node_id, mems in node_memories.items():
                 for mem in mems:
                     if hasattr(mem, 'fidelity') and mem.fidelity > 0:
                         delivered += 1

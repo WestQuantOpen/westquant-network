@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import contextlib
 from typing import Any
 
 from westquant_network.ir import (
@@ -55,7 +56,7 @@ def _attenuation_to_drop_rate(attenuation: float, distance: float) -> float:
     return max(0.0, min(1.0, 1.0 - transmittance))
 
 
-def _t2_to_decoherence_rate(T2: float | None) -> float:
+def _t2_to_decoherence_rate(T2: float | None) -> float:  # noqa: N803
     """Convert T2 (coherence time) to decoherence rate."""
     if T2 is None or T2 <= 0:
         return 0.0
@@ -112,7 +113,6 @@ class SimQNAdapter:
             from qns.entity.node.node import QNode
             from qns.entity.qchannel.qchannel import QuantumChannel
             from qns.network.network import QuantumNetwork
-            from qns.network.requests import Request
             from qns.network.route.dijkstra import DijkstraRouteAlgorithm
             from qns.network.route.dijkstra_heap import DijkstraRouteAlgorithmHeap
             from qns.simulator.simulator import Simulator
@@ -195,10 +195,8 @@ class SimQNAdapter:
             net.add_cchannel(cchannel)
 
         # Build route table
-        try:
+        with contextlib.suppress(Exception):
             net.build_route()
-        except Exception:
-            pass
 
         # Create requests
         requests_created = 0
@@ -215,10 +213,8 @@ class SimQNAdapter:
                 requests_created += 1
 
         # Run simulation
-        try:
+        with contextlib.suppress(Exception):
             sim.run()
-        except Exception:
-            pass
 
         # Collect results
         wall_time = _time.time() - wall_start
