@@ -32,10 +32,10 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-sequence = ["sequence>=5.0"]
-simqn = ["simqn>=0.2"]
+sequence = ["sequence>=0.8"]
+simqn = ["qns>=0.2"]
 netsquid = ["netsquid>=1.0"]
-qoala = ["qoala>=0.1"]
+qoala = ["qoala>=1.0"]
 dev = [
     "pytest>=7.0",
     "pytest-cov>=4.0",

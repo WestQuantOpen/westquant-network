@@ -20,11 +20,32 @@
 
 ## Current work
 
-- Phase A: Simulator Audit — installing and inspecting SeQUeNCe, NetSquid, SimQN, Qoala
+- Phase A: Simulator Audit — SeQUeNCe and SimQN installed, NetSquid/Qoala pending registration
 
 ## Findings
 
-- (pending audit)
+### Simulator installation status
+
+| Simulator | PyPI name | Version | Status | License |
+|-----------|-----------|---------|--------|---------|
+| SeQUeNCe | `sequence` | 0.8.0 | ✅ Installed | BSD-3 |
+| SimQN | `qns` | 0.2.3 | ✅ Installed | GPLv3 |
+| NetSquid | `netsquid` | — | ⚠️ Requires registration | Proprietary (free for non-commercial) |
+| Qoala | `qoala` | 1.0.0 | ⚠️ Requires NetSquid | MIT (but depends on NetSquid) |
+
+### Installation details
+
+- **SeQUeNCe**: `pip install sequence` — installs from PyPI, includes QuTiP, Dash, JupyterLab. BSD-3 license, CI-friendly.
+- **SimQN**: `pip install qns` — installs from PyPI, lightweight (numpy + pandas). GPLv3 license, CI-friendly.
+- **NetSquid**: Requires forum registration at https://forum.netsquid.org. Install with `pip install netsquid --extra-index-url=https://pypi.netsquid.org`. Proprietary license, NOT CI-friendly without credentials.
+- **Qoala**: Available on PyPI but depends on NetSquid. Install with `pip install qoala --extra-index-url=https://pypi.netsquid.org`. MIT license, but transitively constrained by NetSquid.
+
+### Key architecture observations
+
+- SeQUeNCe uses a custom discrete-event kernel with hardware/entanglement/resource/network/application layers
+- SimQN is network-layer focused with heap-based event scheduling and Dijkstra routing
+- NetSquid is physics-focused with time-dependent decoherence and multiple state formalisms
+- Qoala adds software/hardware execution scheduling on top of NetSquid
 
 ## Unexpected differences
 
