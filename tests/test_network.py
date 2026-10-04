@@ -152,6 +152,7 @@ def test_golden_benchmarks():
 )
 def test_simqn_adapter():
     """Test SimQN adapter runs and produces results."""
+    pytest.importorskip("qns", reason="SimQN not installed")
     exp = _make_line_experiment(2, spacing=1.0)
     exp.topology.edges[0].quantum_link.attenuation = 0.0
     result = simulate_backend(exp, backend="simqn")
@@ -167,6 +168,7 @@ def test_simqn_adapter():
 )
 def test_sequence_adapter():
     """Test SeQUeNCe adapter runs and produces results."""
+    pytest.importorskip("sequence", reason="SeQUeNCe not installed")
     exp = _make_line_experiment(2, spacing=1.0)
     exp.topology.edges[0].quantum_link.attenuation = 0.0
     result = simulate_backend(exp, backend="sequence")
@@ -204,6 +206,7 @@ def test_compare_backends():
 )
 def test_simqn_capabilities():
     """Test SimQN capability discovery."""
+    pytest.importorskip("qns", reason="SimQN not installed")
     from westquant_network.adapters.simqn import SimQNAdapter
     adapter = SimQNAdapter()
     caps = adapter.capabilities()
@@ -218,6 +221,7 @@ def test_simqn_capabilities():
 )
 def test_sequence_capabilities():
     """Test SeQUeNCe capability discovery."""
+    pytest.importorskip("sequence", reason="SeQUeNCe not installed")
     from westquant_network.adapters.sequence import SequenceAdapter
     adapter = SequenceAdapter()
     caps = adapter.capabilities()
