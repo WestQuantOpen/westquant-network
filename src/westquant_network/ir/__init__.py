@@ -255,7 +255,10 @@ class ExperimentSpec(BaseModel):
     repeaters: list[RepeaterSpec] = Field(
         default_factory=list, description="Repeater specifications"
     )
-    traffic: TrafficSpec = Field(default_factory=TrafficSpec, description="Traffic")
+    traffic: TrafficSpec = Field(
+        default_factory=lambda: TrafficSpec(model=TrafficModel.SINGLE_REQUEST),
+        description="Traffic",
+    )
     seed: int = Field(default=42, description="Random seed")
     duration: float = Field(default=10.0, ge=0, description="Simulation duration (s)")
     objective: str = Field(
