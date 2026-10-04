@@ -30,13 +30,13 @@ def simulate(
 
     elif backend_name == "simqn":
         from westquant_network.adapters.simqn import SimQNAdapter
-        adapter = SimQNAdapter()
-        return adapter.simulate(experiment, policies)
+        simqn_adapter = SimQNAdapter()
+        return simqn_adapter.simulate(experiment, policies)
 
     elif backend_name == "sequence":
         from westquant_network.adapters.sequence import SequenceAdapter
-        adapter = SequenceAdapter()
-        return adapter.simulate(experiment, policies)
+        seq_adapter = SequenceAdapter()
+        return seq_adapter.simulate(experiment, policies)
 
     elif backend_name == "netsquid":
         try:

@@ -75,8 +75,8 @@ def main() -> None:
     elif args.command == "benchmark":
         from westquant_network.benchmark import run_all_benchmarks
 
-        results = run_all_benchmarks()
-        output = json.dumps(results, indent=2, default=str)
+        bench_results = run_all_benchmarks()
+        output = json.dumps(bench_results, indent=2, default=str)
         if args.output:
             with open(args.output, "w") as f:
                 f.write(output)
