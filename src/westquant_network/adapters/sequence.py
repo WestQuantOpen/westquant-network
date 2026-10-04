@@ -106,7 +106,6 @@ class SequenceAdapter:
 
         try:
             from sequence.components.optical_channel import (
-                ClassicalChannel,
                 QuantumChannel,
             )
             from sequence.kernel.timeline import Timeline
