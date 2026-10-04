@@ -187,9 +187,12 @@ def test_compare_backends():
         pass
     results = compare(exp, backends)
     assert "reference" in results
-    assert "simqn" in results
-    assert "sequence" in results
     assert results["reference"].delivered_pairs > 0
+    # simqn and sequence are optional - only check if installed
+    if "simqn" in backends:
+        assert "simqn" in results
+    if "sequence" in backends:
+        assert "sequence" in results
 
 
 def test_simqn_capabilities():
