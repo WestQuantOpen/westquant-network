@@ -1,5 +1,7 @@
 """Tests for WestQuant Network."""
 
+import pytest
+
 from westquant_network import (
     EdgeSpec,
     ExperimentSpec,
@@ -144,6 +146,10 @@ def test_golden_benchmarks():
     assert results["B01"]["delivered"] > 0
 
 
+@pytest.mark.skipif(
+    pytest.importorskip("qns", reason="SimQN not installed") is None,
+    reason="SimQN not installed",
+)
 def test_simqn_adapter():
     """Test SimQN adapter runs and produces results."""
     exp = _make_line_experiment(2, spacing=1.0)
@@ -155,6 +161,10 @@ def test_simqn_adapter():
     assert "memory.T2" in result.translation_report
 
 
+@pytest.mark.skipif(
+    pytest.importorskip("sequence", reason="SeQUeNCe not installed") is None,
+    reason="SeQUeNCe not installed",
+)
 def test_sequence_adapter():
     """Test SeQUeNCe adapter runs and produces results."""
     exp = _make_line_experiment(2, spacing=1.0)
@@ -170,13 +180,28 @@ def test_compare_backends():
     """Test multi-backend comparison."""
     exp = _make_line_experiment(2, spacing=1.0)
     exp.topology.edges[0].quantum_link.attenuation = 0.0
-    results = compare(exp, ["reference", "simqn", "sequence"])
+    backends = ["reference"]
+    try:
+        import qns  # noqa: F401
+        backends.append("simqn")
+    except ImportError:
+        pass
+    try:
+        import sequence  # noqa: F401
+        backends.append("sequence")
+    except ImportError:
+        pass
+    results = compare(exp, backends)
     assert "reference" in results
     assert "simqn" in results
     assert "sequence" in results
     assert results["reference"].delivered_pairs > 0
 
 
+@pytest.mark.skipif(
+    pytest.importorskip("qns", reason="SimQN not installed") is None,
+    reason="SimQN not installed",
+)
 def test_simqn_capabilities():
     """Test SimQN capability discovery."""
     from westquant_network.adapters.simqn import SimQNAdapter
@@ -187,6 +212,10 @@ def test_simqn_capabilities():
     assert "swapping" in caps
 
 
+@pytest.mark.skipif(
+    pytest.importorskip("sequence", reason="SeQUeNCe not installed") is None,
+    reason="SeQUeNCe not installed",
+)
 def test_sequence_capabilities():
     """Test SeQUeNCe capability discovery."""
     from westquant_network.adapters.sequence import SequenceAdapter
