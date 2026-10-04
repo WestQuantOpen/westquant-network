@@ -1,0 +1,48 @@
+experiment_id: example_line_repeater
+topology:
+  topology_type: line
+  nodes:
+    - node_id: n0
+      memories:
+        - capacity: 10
+          T2: 1.0
+          initial_fidelity: 0.99
+    - node_id: n1
+      is_repeater: true
+      memories:
+        - capacity: 10
+          T2: 1.0
+    - node_id: n2
+      memories:
+        - capacity: 10
+          T2: 1.0
+  edges:
+    - source: n0
+      target: n1
+      quantum_link:
+        distance: 25.0
+        attenuation: 0.2
+        source_rate: 1000000
+    - source: n1
+      target: n2
+      quantum_link:
+        distance: 25.0
+        attenuation: 0.2
+        source_rate: 1000000
+repeaters:
+  - node_id: n1
+    swap_success_probability: 0.9
+    swap_latency: 0.0001
+traffic:
+  model: single_request
+  requests:
+    - request_id: r0
+      source: n0
+      destination: n2
+      min_fidelity: 0.9
+      num_pairs: 100
+seed: 42
+duration: 10.0
+objective: qualified_goodput
+min_fidelity: 0.9
+backend: reference

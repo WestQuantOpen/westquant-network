@@ -1,0 +1,2 @@
+[console_scripts]
+westquant-network = westquant_network.cli:main

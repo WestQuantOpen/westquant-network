@@ -1,0 +1,95 @@
+Metadata-Version: 2.4
+Name: westquant-network
+Version: 0.1.0a1
+Summary: Simulator-independent experimentation, optimization, and AI layer for quantum networks
+Author: WestQuant Open
+License: Apache-2.0
+Keywords: quantum,network,simulator,entanglement,repeater,routing
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Scientific/Engineering :: Physics
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+Requires-Dist: pyyaml>=6.0
+Requires-Dist: pydantic>=2.0
+Requires-Dist: numpy>=1.24
+Requires-Dist: networkx>=3.0
+Requires-Dist: structlog>=23.0
+Provides-Extra: sequence
+Requires-Dist: sequence>=5.0; extra == "sequence"
+Provides-Extra: simqn
+Requires-Dist: simqn>=0.2; extra == "simqn"
+Provides-Extra: netsquid
+Requires-Dist: netsquid>=1.0; extra == "netsquid"
+Provides-Extra: qoala
+Requires-Dist: qoala>=0.1; extra == "qoala"
+Provides-Extra: dev
+Requires-Dist: pytest>=7.0; extra == "dev"
+Requires-Dist: pytest-cov>=4.0; extra == "dev"
+Requires-Dist: ruff>=0.1; extra == "dev"
+Requires-Dist: mypy>=1.5; extra == "dev"
+
+# WestQuant Network
+
+**Simulator-independent experimentation, optimization, and AI layer for quantum networks.**
+
+WestQuant Network is an open framework for quantum-network modelling, simulation, benchmarking, representation search, and AI-driven optimization. It sits on top of existing quantum-network simulators — SeQUeNCe, NetSquid, SimQN, and Qoala — providing a common experiment specification, normalized metrics, cross-simulator validation, and an optimization/AI interface.
+
+## Installation
+
+```bash
+pip install westquant-network
+```
+
+With simulator backends (installed separately):
+
+```bash
+pip install westquant-network[sequence,simqn]
+# NetSquid and Qoala require registration — see their docs
+```
+
+## Quick start
+
+```python
+from westquant.network import Experiment
+
+exp = Experiment.from_yaml("experiment.yaml")
+results = exp.compare(backends=["reference", "sequence", "simqn"])
+```
+
+```bash
+westquant-network run experiment.yaml
+westquant-network compare experiment.yaml --backends reference,sequence,simqn
+```
+
+## Architecture
+
+```
+westquant-network
+├── ir          — WQIR Network representation
+├── policies    — routing, memory, swapping, purification, admission
+├── metrics     — normalized SimulationResult
+├── trace       — common trace format
+├── datasets    — AI dataset export
+├── benchmark   — golden experiments
+├── validation  — cross-simulator invariance
+├── reference   — WestQuant reference discrete-event simulator
+└── adapters
+    ├── sequence
+    ├── netsquid
+    ├── simqn
+    └── qoala
+```
+
+## Status
+
+Phase A — Simulator Audit. See [STATUS.md](STATUS.md) and [docs/PROGRAM_SPEC.md](docs/PROGRAM_SPEC.md).
+
+## License
+
+Apache-2.0
