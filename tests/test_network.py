@@ -146,10 +146,6 @@ def test_golden_benchmarks():
     assert results["B01"]["delivered"] > 0
 
 
-@pytest.mark.skipif(
-    pytest.importorskip("qns", reason="SimQN not installed") is None,
-    reason="SimQN not installed",
-)
 def test_simqn_adapter():
     """Test SimQN adapter runs and produces results."""
     pytest.importorskip("qns", reason="SimQN not installed")
@@ -162,10 +158,6 @@ def test_simqn_adapter():
     assert "memory.T2" in result.translation_report
 
 
-@pytest.mark.skipif(
-    pytest.importorskip("sequence", reason="SeQUeNCe not installed") is None,
-    reason="SeQUeNCe not installed",
-)
 def test_sequence_adapter():
     """Test SeQUeNCe adapter runs and produces results."""
     pytest.importorskip("sequence", reason="SeQUeNCe not installed")
@@ -200,10 +192,6 @@ def test_compare_backends():
     assert results["reference"].delivered_pairs > 0
 
 
-@pytest.mark.skipif(
-    pytest.importorskip("qns", reason="SimQN not installed") is None,
-    reason="SimQN not installed",
-)
 def test_simqn_capabilities():
     """Test SimQN capability discovery."""
     pytest.importorskip("qns", reason="SimQN not installed")
@@ -215,10 +203,6 @@ def test_simqn_capabilities():
     assert "swapping" in caps
 
 
-@pytest.mark.skipif(
-    pytest.importorskip("sequence", reason="SeQUeNCe not installed") is None,
-    reason="SeQUeNCe not installed",
-)
 def test_sequence_capabilities():
     """Test SeQUeNCe capability discovery."""
     pytest.importorskip("sequence", reason="SeQUeNCe not installed")
