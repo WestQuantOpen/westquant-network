@@ -14,10 +14,10 @@ mypy>=1.5
 netsquid>=1.0
 
 [qoala]
-qoala>=0.1
+qoala>=1.0
 
 [sequence]
-sequence>=5.0
+sequence>=0.8
 
 [simqn]
-simqn>=0.2
+qns>=0.2

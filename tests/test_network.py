@@ -16,6 +16,8 @@ from westquant_network import (
     simulate,
 )
 from westquant_network.adapters import BackendCapabilities
+from westquant_network.backend import compare
+from westquant_network.backend import simulate as simulate_backend
 from westquant_network.benchmark import run_all_benchmarks
 from westquant_network.policies import RoutingPolicyType
 from westquant_network.validation import TranslationReport, TranslationStatus
@@ -140,3 +142,56 @@ def test_golden_benchmarks():
     assert "B01" in results
     assert "B04" in results
     assert results["B01"]["delivered"] > 0
+
+
+def test_simqn_adapter():
+    """Test SimQN adapter runs and produces results."""
+    exp = _make_line_experiment(2, spacing=1.0)
+    exp.topology.edges[0].quantum_link.attenuation = 0.0
+    result = simulate_backend(exp, backend="simqn")
+    assert result.backend == "simqn"
+    assert result.experiment_id == "test"
+    assert result.wall_time >= 0
+    assert "memory.T2" in result.translation_report
+
+
+def test_sequence_adapter():
+    """Test SeQUeNCe adapter runs and produces results."""
+    exp = _make_line_experiment(2, spacing=1.0)
+    exp.topology.edges[0].quantum_link.attenuation = 0.0
+    result = simulate_backend(exp, backend="sequence")
+    assert result.backend == "sequence"
+    assert result.experiment_id == "test"
+    assert result.wall_time >= 0
+    assert "memory.T2" in result.translation_report
+
+
+def test_compare_backends():
+    """Test multi-backend comparison."""
+    exp = _make_line_experiment(2, spacing=1.0)
+    exp.topology.edges[0].quantum_link.attenuation = 0.0
+    results = compare(exp, ["reference", "simqn", "sequence"])
+    assert "reference" in results
+    assert "simqn" in results
+    assert "sequence" in results
+    assert results["reference"].delivered_pairs > 0
+
+
+def test_simqn_capabilities():
+    """Test SimQN capability discovery."""
+    from westquant_network.adapters.simqn import SimQNAdapter
+    adapter = SimQNAdapter()
+    caps = adapter.capabilities()
+    assert caps["memory"]["capacity"] is True
+    assert caps["routing"]["dijkstra"] is True
+    assert "swapping" in caps
+
+
+def test_sequence_capabilities():
+    """Test SeQUeNCe capability discovery."""
+    from westquant_network.adapters.sequence import SequenceAdapter
+    adapter = SequenceAdapter()
+    caps = adapter.capabilities()
+    assert caps["memory"]["T1"] is True
+    assert caps["swapping"] is True
+    assert "purification" in caps

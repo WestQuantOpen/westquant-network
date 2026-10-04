@@ -8,8 +8,8 @@ import sys
 
 import yaml
 
+from westquant_network.backend import compare, simulate
 from westquant_network.ir import ExperimentSpec
-from westquant_network.reference import simulate
 
 
 def _experiment_from_yaml(path: str) -> ExperimentSpec:
@@ -60,16 +60,13 @@ def main() -> None:
         print(output)
 
     elif args.command == "compare":
-        from westquant_network.benchmark import run_all_benchmarks
-
         exp = _experiment_from_yaml(args.experiment)
         backends = args.backends.split(",")
-        results = {}
-        for backend in backends:
-            exp_copy = exp.model_copy()
-            exp_copy.backend = backend.strip()
-            results[backend.strip()] = simulate(exp_copy).model_dump()
-        output = json.dumps(results, indent=2, default=str)
+        results = compare(exp, [b.strip() for b in backends])
+        output = json.dumps(
+            {k: v.model_dump() for k, v in results.items()},
+            indent=2, default=str,
+        )
         if args.output:
             with open(args.output, "w") as f:
                 f.write(output)

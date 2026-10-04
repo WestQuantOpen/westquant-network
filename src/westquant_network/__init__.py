@@ -1,5 +1,7 @@
 """WestQuant Network — simulator-independent quantum network framework."""
 
+from westquant_network.backend import compare
+from westquant_network.backend import simulate as simulate_backend
 from westquant_network.ir import (
     ClassicalLinkSpec,
     EdgeSpec,
@@ -48,4 +50,6 @@ __all__ = [
     "AdmissionPolicy",
     "SimulationResult",
     "simulate",
+    "simulate_backend",
+    "compare",
 ]
